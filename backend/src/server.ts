@@ -1,19 +1,16 @@
 import express from 'express';
+import 'express-async-errors';
 import './database/connection';
+import routes from './routes';
+import path from 'path';
+import errorHandler from './errors/handler';
+import cors from 'cors';
 
 const app = express();
-
+app.use(cors());
 app.use(express.json())
-
-app.get('/users', (request, response) => {
-  return response.json({ message: ' Hello NLW' })
-})
-
-
-app.post('/orphanages', (request, response) => {
-  const { name, latitude, longitude, about, instructions, open_on_weekends, opening_hours } = request.body
-
-  return response.json({ message: ' Hello NLW' })
-})
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
+app.use(routes)
+app.use(errorHandler)
 
 app.listen(3333);
